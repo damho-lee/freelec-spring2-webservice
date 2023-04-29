@@ -5,8 +5,8 @@
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="freelec-spring2-webservice.freelec-spring2-webservice.main~1" target="1.8" />
-      <module name="freelec-spring2-webservice.freelec-spring2-webservice.test~1" target="1.8" />
+      <module name="freelec-spring2-webservice.freelec-spring2-webservice.main" target="1.8" />
+      <module name="freelec-spring2-webservice.freelec-spring2-webservice.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

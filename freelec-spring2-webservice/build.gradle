@@ -34,4 +34,6 @@ dependencies {
 	testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 	implementation('org.springframework.boot:spring-boot-stater-data-jpa')
 	implementation('com.h2database:h2')
+	implementation('org.springframework.boot:spring-boot-starter-mustache')
+	testImplementation('org.springframework.boot:spring-boot-starter-mustache');
 }

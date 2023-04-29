@@ -2,12 +2,16 @@ package com.damo.book.springboot.service.posts;
 
 import com.damo.book.springboot.domain.posts.Posts;
 import com.damo.book.springboot.domain.posts.PostsRepository;
+import com.damo.book.springboot.web.dto.PostsListResponseDto;
 import com.damo.book.springboot.web.dto.PostsResponseDto;
 import com.damo.book.springboot.web.dto.PostsSaveRequestDto;
 import com.damo.book.springboot.web.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.stream.Collectors;
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @Service
@@ -18,6 +22,7 @@ public class PostsService {
     public Long save(PostsSaveRequestDto requestDto) {
         return postsRepository.save(requestDto.toEntity()).getId();
     }
+    @Transactional
     public Long update(Long id, PostsUpdateRequestDto requestDto) {
         Posts posts = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
@@ -25,6 +30,19 @@ public class PostsService {
         posts.update(requestDto.getTitle(), requestDto.getContent());
 
         return id;
+    }
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDto> findAllDesc() {
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+    @Transactional
+    public void delete (Long id) {
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow( () -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+
+        postsRepository.delete(posts);
     }
 
     public PostsResponseDto findById(Long id) {
