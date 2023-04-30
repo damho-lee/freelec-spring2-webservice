@@ -20,20 +20,40 @@ group 'com.damo.book'
 version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
+//sourceCompatibility = 1.8
+
 repositories {
 	mavenCentral()
-	//jcenter()
 }
 
 dependencies {
+	/*
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	implementation('org.project.lombok:lombok')
-	implementation 'org.projectlombok:lombok:1.18.22'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
-	testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
-	implementation('org.springframework.boot:spring-boot-stater-data-jpa')
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	implementation('com.h2database:h2')
 	implementation('org.springframework.boot:spring-boot-starter-mustache')
-	testImplementation('org.springframework.boot:spring-boot-starter-mustache');
+
+	testImplementation('org.springframework.boot:spring-boot-starter-mustache')
+	implementation('org.springframework.boot:spring-boot-starter-oauth2-client')
+	implementation('org.springframework.session:spring-session-jdbc')
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	testImplementation("org.springframework.security:spring-security-test")
+
+	 */
+	implementation('org.springframework.boot:spring-boot-starter-web')
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+	implementation('com.h2database:h2')
+	implementation('org.springframework.boot:spring-boot-starter-mustache')
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	implementation('org.projectlombok:lombok')
+	implementation('org.springframework.boot:spring-boot-starter-oauth2-client')
+	implementation('org.springframework.session:spring-session-jdbc')
+	testImplementation('org.springframework.security:spring-security-test')
+	annotationProcessor('org.projectlombok:lombok')
+	testAnnotationProcessor('org.projectlombok:lombok')
+
+	implementation('org.mariadb.jdbc:mariadb-java-client')
+
+
 }
