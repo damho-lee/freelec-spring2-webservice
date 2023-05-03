@@ -2,6 +2,7 @@ package com.damo.book.springboot.web.dto;
 
 import com.damo.book.springboot.config.auth.LoginUser;
 import com.damo.book.springboot.config.auth.dto.SessionUser;
+import com.damo.book.springboot.domain.posts.Posts;
 import com.damo.book.springboot.service.posts.PostsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -35,5 +36,13 @@ public class IndexController {
         model.addAttribute("post", dto);
 
         return "posts-update";
+    }
+    @GetMapping("/posts/search")
+    public String search(String keyword, Model model) {
+        List<Posts> searchList = postsService.search(keyword);
+
+        model.addAttribute("searchList", searchList);
+
+        return "posts-search";
     }
 }
