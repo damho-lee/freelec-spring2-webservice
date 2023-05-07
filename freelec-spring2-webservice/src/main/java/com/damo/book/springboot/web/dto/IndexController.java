@@ -6,48 +6,77 @@ import com.damo.book.springboot.domain.posts.Posts;
 import com.damo.book.springboot.service.posts.PostsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
-
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
-    private final PostsService postsService;
-    //private final HttpSession httpSession;
 
+    private final PostsService postsService;
+
+    private boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || AnonymousAuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
+            return false;
+        }
+        return authentication.isAuthenticated();
+    }
+
+    //@LoginUser를 사용하여 세션 정보를 가져옴
     @GetMapping("/")
-    public String index(Model model, @LoginUser SessionUser user) {
+    public String index(Model model, @LoginUser SessionUser user){
         model.addAttribute("posts", postsService.findAllDesc());
-        if(user != null) {
+
+        if (user != null) {
             model.addAttribute("loginUserName", user.getName());
         }
         return "index";
     }
+
+
     @GetMapping("/posts/save")
-    public String postsSave() {
+    public String postsSave(){
         return "posts-save";
     }
+
     @GetMapping("/posts/update/{id}")
-    public String postsUpdate(@PathVariable Long id, Model model) {
+    public String postsUpdate(@PathVariable Long id, Model model){
         PostsResponseDto dto = postsService.findById(id);
         model.addAttribute("post", dto);
-
         return "posts-update";
     }
+
     @GetMapping("/posts/search")
-    public String search(String keyword, Model model) {
+    public String search(String keyword, Model model){
         List<Posts> searchList = postsService.search(keyword);
 
         model.addAttribute("searchList", searchList);
 
         return "posts-search";
     }
-    @GetMapping
+
+    @GetMapping("/login")
     public String getLoginPage(Model model, @LoginUser SessionUser user) throws Exception {
+        if (isAuthenticated()) {
+            return "index";
+        }
         return "oauth/login";
     }
+
+    @GetMapping("/introduce")
+    public String introducePage(Model model, @LoginUser SessionUser user) {
+        if (user != null) {
+            model.addAttribute("loginUserName", user.getName());
+        }
+        return "introduce";
+    }
+
 }
