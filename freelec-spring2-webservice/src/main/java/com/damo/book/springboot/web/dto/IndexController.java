@@ -5,6 +5,7 @@ import com.damo.book.springboot.config.auth.dto.SessionUser;
 import com.damo.book.springboot.domain.posts.Posts;
 import com.damo.book.springboot.service.posts.PostsService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
@@ -44,5 +45,9 @@ public class IndexController {
         model.addAttribute("searchList", searchList);
 
         return "posts-search";
+    }
+    @GetMapping
+    public String getLoginPage(Model model, @LoginUser SessionUser user) throws Exception {
+        return "oauth/login";
     }
 }
