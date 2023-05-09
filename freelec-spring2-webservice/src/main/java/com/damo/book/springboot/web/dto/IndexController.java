@@ -5,7 +5,6 @@ import com.damo.book.springboot.config.auth.dto.SessionUser;
 import com.damo.book.springboot.domain.posts.Posts;
 import com.damo.book.springboot.service.posts.PostsService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.servlet.http.HttpSession;
+import com.damo.book.springboot.domain.user.User;
+
 import java.util.List;
 @RequiredArgsConstructor
 @Controller
@@ -44,14 +44,14 @@ public class IndexController {
 
     @GetMapping("/posts/save")
     public String postsSave(){
-        return "posts-save";
+        return "post/posts-save";
     }
 
     @GetMapping("/posts/update/{id}")
     public String postsUpdate(@PathVariable Long id, Model model){
         PostsResponseDto dto = postsService.findById(id);
         model.addAttribute("post", dto);
-        return "posts-update";
+        return "post/posts-update";
     }
 
     @GetMapping("/posts/search")
@@ -60,12 +60,13 @@ public class IndexController {
 
         model.addAttribute("searchList", searchList);
 
-        return "posts-search";
+        return "post/posts-search";
     }
 
     @GetMapping("/login")
     public String getLoginPage(Model model, @LoginUser SessionUser user) throws Exception {
         if (isAuthenticated()) {
+            model.addAttribute("loginUserName", user.getName());
             return "index";
         }
         return "oauth/login";
@@ -76,7 +77,16 @@ public class IndexController {
         if (user != null) {
             model.addAttribute("loginUserName", user.getName());
         }
-        return "introduce";
+        return "nav/introduce";
+    }
+
+    @GetMapping("/notice")
+    public String noticePage(Model model, @LoginUser SessionUser user) {
+        if (user != null) {
+            model.addAttribute("loginUserName", user.getName());
+
+        }
+        return "nav/notice";
     }
 
 }
